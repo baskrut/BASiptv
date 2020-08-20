@@ -22,6 +22,7 @@ class M3UParser(private val playList: List<String>) {
         var title = ""
         var sourse = ""
 
+
 var splittedLine = listOf(" ")
         for(currentLine in playList){
 
@@ -30,15 +31,15 @@ var splittedLine = listOf(" ")
             }
             else if ("^http".toRegex().containsMatchIn(currentLine)){// -> без regex currentLine.startsWith(HTTP)
 
-               sourse = getSource(currentLine)
 
                title = getTitle(splittedLine)
 
-                type = splittedLine[1]
+                type = getType(splittedLine)
                 chNumber = splittedLine[2]
 
-//                logo = splittedLine[3]
                 logo = getLogo(splittedLine)
+
+                sourse = getSource(currentLine)// строка начинающаяся с HTTP априори ссылка на видео
 
 //              getLogo(splittedLine)
 //                getType(splittedLine)
@@ -50,80 +51,66 @@ var splittedLine = listOf(" ")
         }*/
 
 //return logo
-       return TvChanel(title, sourse, logo, type, chNumber)
+       return TvChanel(title, sourse, logo, type, chNumber, false)
 
-    }
-
-    fun getSource(currentLine: String): String { // строка начинающаяся с HTTP априори ссылка на видео
-        return currentLine
-        /* for (word in splitedLine) {
-             if ()//условие для получения параметра
-         }*/
     }
 
     fun getTitle(splitedLine: List<String>): String{//во ???всех??? вариантах плейлистов название стоит последним
-
-        var title = "kkk"                                       //        if (splitedLine.size == 2 ){  !!! код на всякий случай, если всплывут другие варианты плейлиста
-        if (splitedLine.size > 1){                            //            title = splitedLine[1]
-            title = splitedLine.last()                         //        }else  if (splitedLine.size > 2){
-        }                                                 //            for(word in splitedLine){
-        return title                                            //                if( )
-    }                                                               //            }
-
-
-
+        var title = ""
+        if (splitedLine.size > 1){
+            title = splitedLine.last()
+        }
+        return title
+    }
 
     fun getLogo(splitedLine: List<String>): String{
-
-        var logo = "kkkkkkkk"
-
+        var logo = ""
 
         if (splitedLine.size > 2){ //больше двух потому что 1-> EXTINF , 2 -> название
 
-            val pattern = "\\.(png|jpg|gif|svg|jpeg|swf)".toRegex() // ??возможно правильнее так?? ->  \.png | \.jpg | \.gif | \.svg | \.jpeg | \.swf
-
+            val pattern = "\\.(png|jpg|gif|svg|jpeg|swf)".toRegex()
             for(word in splitedLine){
-                if(pattern.containsMatchIn(word)){//todo проверить как работает
+                if(pattern.containsMatchIn(word)){
 
-//                    val httpPattern = "^http.*(png|jpg|gif|svg|jpeg|swf)$".toRegex()
-//                    word.filterNot {  }
-//
-//var resultStr = ""
-//                    logo = word.
-                    logo = word.replaceBefore("http", "")/*("^http.*(png|jpg|gif|svg|jpeg|swf)$".toRegex(), "")*///
-
-                    logo = logo.replace(logo[logo.length-1], ' ', false)
-//                    logo = word.replace("^ \\$httpPattern".toRegex(), "") // удаляет всё символы до http и после *.расширение файла*
-//logo = word
+                    logo = word.replaceBefore("http", "")
+                    logo = logo.dropLast(1)/*replace(logo[logo.length-1], "")*/
                 }
             }
         }
-
         return logo
     }
-   /* fun getType(splitedLine: List<String>): String{
+   fun getType(splitedLine: List<String>): String{//todo доделать чтоб правильно обрезало
 
         var type = ""
 
-        if (splitedLine.size > 2){
+        if (splitedLine.size > 2){//больше двух потому что 1-> EXTINF , 2 -> название
+
+            val pattern = "(group-title)".toRegex()
             for(word in splitedLine){
-                if() условие для получения параметра
+                if(pattern.containsMatchIn(word)){
+                    type = word.replaceBefore('=', "")
+                }
             }
         }
-
         return type
     }
 
-    fun getChNumber(splitedLine: List<String>): String{
+       fun getChNumber(splitedLine: List<String>): String{//todo доделать чтоб правильно обрезало
 
-        var chNumber
-                = ""
-        if (splitedLine.size > 2){
-            for(word in splitedLine){
-                if()//условие для получения параметра
-            }
-        }
-        return chNumber
+          var chNumber = ""
+          if (splitedLine.size > 2){//больше двух потому что 1-> EXTINF , 2 -> название
+
+              val pattern = "(tvg-name)".toRegex()
+              for(word in splitedLine){
+                  if(pattern.containsMatchIn(word)){
+                      chNumber = word.replaceBefore('=', "")
+                  }
+              }
+          }
+          return chNumber
+      }
+
+    fun getSource(currentLine: String): String { // строка начинающаяся с HTTP априори ссылка на видео
+        return currentLine
     }
-*/
 }

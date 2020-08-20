@@ -19,6 +19,25 @@
         android:layout_weight="1"
         android:text="TextView" />
 
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="100dp"
+                android:layout_height="100dp">
+
+                <TextView
+                    android:id="@+id/tvType"
+                    android:layout_width="50dp"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:text="TextView" />
+                <TextView
+                    android:id="@+id/tvNumber"
+                    android:layout_width="50dp"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:text="TextView" />
+            </LinearLayout>
+
     <!--todo добавить вертикальный лайаут, в него засунуть 2 текст вью(название и жанр)-->
 
 </LinearLayout>
