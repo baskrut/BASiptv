@@ -25,6 +25,7 @@
             android:layout_height="24dp"
             app:srcCompat="@drawable/ic_menu_24px"
             android:background="@null"
+
             />
     </androidx.appcompat.widget.Toolbar>
 
