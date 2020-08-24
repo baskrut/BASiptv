@@ -9,7 +9,7 @@ import com.andrewbas.basiptv.TvChanel
 метод save() записывает всё в базу данных
 работа с классом через parser.parse().save()*/
 
-class M3UParser(private val playList: List<String>) {
+class M3UParser(private val playList: List<String>) { //todo доптсать метод save()
     fun parse(): TvChanel{
         var logo = ""
         var type = ""
@@ -84,5 +84,9 @@ class M3UParser(private val playList: List<String>) {
 
     fun getSource(currentLine: String): String {            // строка начинающаяся с HTTP априори ссылка на видео
         return currentLine
+    }
+
+    fun save(tvChanel: TvChanel){
+
     }
 }
