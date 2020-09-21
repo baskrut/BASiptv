@@ -11,4 +11,5 @@ data class Channel(
     val videoSource: String,
     val logo: String,
     val type: String,
-    val chNumber: Int )
+    val chNumber: String, //String because its gets from String and puts in TextView
+    val fav: Boolean)

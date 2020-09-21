@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">BASiptv</string>
+    <string name="dialog_positive_btn">OK</string>
+    <string name="need_url">Пожалуйста, укажите ссылку на плейлист, или загрузите плейлист из памяти устройства</string>
+    <string name="storage_permission">Пожалуйста, для корректной работы приложения, разрешите доступ к внутреннему накопителю</string>
+    <string name="smt_wrong_storage">Что-то пошло не так, пожалуйста повторите попытку, или загрузите с интернета</string>
 </resources>

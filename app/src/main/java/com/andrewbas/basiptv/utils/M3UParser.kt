@@ -1,16 +1,20 @@
-package com.andrewbas.basiptv.Utils
+package com.andrewbas.basiptv.utils
 
-import com.andrewbas.basiptv.TvChanel
+import com.andrewbas.basiptv.db.Channel
+
+// парсер получает лист каналов и парсит их в фоновом потокве
+// парсер выдаёт потоком tvChannel
 
 
-/*парсер получает лист строк
-дальше обрабатывает эти строки
-метод parse() вызывает касткад методов для парсинга листа
-метод save() записывает всё в базу данных
-работа с классом через parser.parse().save()*/
+class M3UParser(private val playList: List<String>) {
 
-class M3UParser(private val playList: List<String>) { //todo доптсать метод save()
-    fun parse(): TvChanel{
+    fun getTvChannels(): List<Channel>{
+        val tvChannels = mutableListOf<Channel>()
+        tvChannels.add(parse())
+       return tvChannels
+    }
+
+    fun parse(): Channel {
         var logo = ""
         var type = ""
         var chNumber = "0"
@@ -32,11 +36,13 @@ class M3UParser(private val playList: List<String>) { //todo доптсать м
                     sourse = getSource(currentLine)  // строка начинающаяся с HTTP априори ссылка на видео
                     getChNumber(splittedLine)
                 }
+
             }
-        return TvChanel(title, sourse, logo, type, chNumber, false)
+
+        return Channel(title, sourse, logo, type, chNumber, false) //пригодится для тестирования
     }
 
-    fun getTitle(splitedLine: List<String>): String{//во ???всех??? вариантах плейлистов название стоит последним
+    private fun getTitle(splitedLine: List<String>): String{//во ???всех??? вариантах плейлистов название стоит последним
         var title = ""
         if (splitedLine.size > 1){
             title = splitedLine.last()
@@ -44,7 +50,7 @@ class M3UParser(private val playList: List<String>) { //todo доптсать м
         return title
     }
 
-    fun getLogo(splitedLine: List<String>): String{
+    private fun getLogo(splitedLine: List<String>): String{
         var logo = ""
         if (splitedLine.size > 2){ //больше двух потому что 1-> EXTINF , 2 -> название
             val pattern = "\\.(png|jpg|gif|svg|jpeg|swf)".toRegex()
@@ -57,7 +63,7 @@ class M3UParser(private val playList: List<String>) { //todo доптсать м
         return logo
     }
 
-    fun getType(splitedLine: List<String>): String{
+    private fun getType(splitedLine: List<String>): String{
         var type = ""
         if (splitedLine.size > 2){                          //больше двух потому что 1-> EXTINF , 2 -> название
             val pattern = "group-title=".toRegex()
@@ -69,7 +75,7 @@ class M3UParser(private val playList: List<String>) { //todo доптсать м
         return type
     }
 
-    fun getChNumber(splitedLine: List<String>): String{
+    private fun getChNumber(splitedLine: List<String>): String{
         var chNumber = ""
         if (splitedLine.size > 2){                        //больше двух потому что 1-> EXTINF , 2 -> название
             val pattern = "tvg-name=".toRegex()
@@ -82,11 +88,9 @@ class M3UParser(private val playList: List<String>) { //todo доптсать м
         return chNumber
     }
 
-    fun getSource(currentLine: String): String {            // строка начинающаяся с HTTP априори ссылка на видео
+    private fun getSource(currentLine: String): String {            // строка начинающаяся с HTTP априори ссылка на видео
         return currentLine
     }
 
-    fun save(tvChanel: TvChanel){
 
-    }
 }
